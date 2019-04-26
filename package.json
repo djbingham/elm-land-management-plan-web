@@ -1,7 +1,7 @@
 {
-  "name": "glupe-base",
-  "version": "0.0.1",
-  "description": "",
+  "name": "land-management-plan-web",
+  "version": "1.0.0",
+  "description": "ELM Land Management Plan web front end",
   "main": "index.js",
   "scripts": {
     "build:css": "bin/build-css",
@@ -9,10 +9,13 @@
     "lint": "standard",
     "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
     "test": "npm run lint && npm run unit-test",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Defra DDTS",
+  "contributors": ["Matthew Collins <matthew.collins@defra.gov.uk>",
+  "David Bingham <david.bingham@defra.gov.uk>"],
+  "license": "OGL",
   "dependencies": {
     "boom": "7.3.0",
     "govuk-frontend": "2.11.0",
