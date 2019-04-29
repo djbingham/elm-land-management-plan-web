@@ -36,8 +36,8 @@ module.exports = {
     context: {
       appVersion: pkg.version,
       assetPath: '/assets',
-      serviceName: 'Service name',
-      pageTitle: 'Service name - GOV.UK',
+      serviceName: 'ELM Land Management Plan',
+      pageTitle: 'ELM Land Management Plan - GOV.UK',
       analyticsAccount: analyticsAccount
     }
   }
