@@ -8,6 +8,8 @@ USER nodejs
 RUN mkdir -p /home/nodejs/app
 WORKDIR /home/nodejs/app
 
+EXPOSE 3000
+
 COPY . /home/nodejs/app/
 RUN npm install
 
