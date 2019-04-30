@@ -1,0 +1,17 @@
+{
+	"defaults": {
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    },
+		"timeout": 5000
+	},
+	"urls": [
+		{
+		"url": "http://localhost:3000/",
+		"ignore": [
+			"WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4"
+		]
+		}
+	]
+	
+}
