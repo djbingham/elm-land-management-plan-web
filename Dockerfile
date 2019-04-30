@@ -1,16 +1,19 @@
-FROM node:10
+FROM node:10.15.3-alpine
 
-RUN groupadd -r nodejs \
-   && useradd -m -r -g nodejs nodejs
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
 
-USER nodejs
-
-RUN mkdir -p /home/nodejs/app
-WORKDIR /home/nodejs/app
+USER node
+WORKDIR /home/node
 
 EXPOSE 3000
 
-COPY . /home/nodejs/app/
-RUN npm install
+# Install dependencies, including build tools
+COPY package.json package-lock.json /home/node/
+RUN NODE_ENV=development npm install
+
+# Add source code, build app and remove build tools
+COPY . /home/node/
+RUN npm run build && npm ci
 
 CMD ["node", "index.js"]
