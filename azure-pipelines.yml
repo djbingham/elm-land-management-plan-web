@@ -11,6 +11,7 @@ steps:
   inputs:
     command: login
     containerRegistry: djbinghamRegistry
+- script: ls -la && git status
 - task: Docker@2
   displayName: Build and Push
   inputs:
