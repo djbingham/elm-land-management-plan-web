@@ -15,4 +15,3 @@ steps:
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: someUser/contoso
