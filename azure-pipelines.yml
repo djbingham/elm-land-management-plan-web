@@ -7,10 +7,41 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+
+
 steps:
-- task: Docker@2
-  displayName: Build and Push
+- task: DockerCompose@0
+  displayName: Build services
   inputs:
-    containerRegistry: djbinghamRegistry
-    command: buildAndPush
-    repository: elm-lmp-web
+    action: Build services
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker/compose.test.yml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    additionalImageTags: $(Build.BuildId)
+
+- task: DockerCompose@0
+  displayName: Run unit tests
+  inputs:
+    action: Run a specific service
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker/compose.test.yml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    serviceName: unit-test
+    detached: false
+
+- task: DockerCompose@0
+  displayName: Push services
+  inputs:
+    action: Push services
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker-compose.yml
+    projectName: $(Build.Repository.Name)
+    qualifyImageNames: true
+    additionalImageTags: $(Build.BuildId)
