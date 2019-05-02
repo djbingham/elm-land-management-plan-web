@@ -10,7 +10,7 @@ EXPOSE 3000
 
 # Install dependencies, including build tools
 COPY package.json package-lock.json /home/node/
-RUN NODE_ENV=development npm install
+RUN NODE_ENV=development npm ci
 
 # Add source code, build app and remove build tools
 COPY . /home/node/
