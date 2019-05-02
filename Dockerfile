@@ -9,11 +9,11 @@ WORKDIR /home/node
 EXPOSE 3000
 
 # Install dependencies, including build tools
-COPY package.json package-lock.json /home/node/
+COPY --chown=node:node package.json package-lock.json /home/node/
 RUN NODE_ENV=development npm ci
 
 # Add source code, build app and remove build tools
-COPY . /home/node/
+COPY --chown=node:node . /home/node/
 RUN npm run build && npm ci
 
 CMD ["node", "index.js"]
