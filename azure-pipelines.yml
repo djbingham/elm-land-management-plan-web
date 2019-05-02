@@ -1,18 +1,10 @@
-trigger:
-- azure-pipelines
-- master
-
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
 - task: Docker@2
-  displayName: Login to ACR
-  inputs:
-    command: login
-    containerRegistry: djbinghamRegistry
-- script: ls -la && git status
-- task: Docker@2
   displayName: Build and Push
   inputs:
+    containerRegistry: djbinghamRegistry
     command: buildAndPush
+    repository: elm-lmp-web
