@@ -8,8 +8,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  azureContainerRegistry: djbinghamResourceManager
-  azureSubscriptionEndpoint: djbinghamRegistry
+  azureContainerRegistry: djbinghamRegistry
+  azureSubscriptionEndpoint: djbinghamResourceManager
 
 steps:
 - task: DockerCompose@0
