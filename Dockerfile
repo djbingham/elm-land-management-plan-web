@@ -1,7 +1,7 @@
 ARG NODE_ENV=production
 ARG NODE_VERSION=10.15.3
 
-# Build/development
+# Development
 FROM node:${NODE_VERSION}-alpine AS development
 
 USER node
