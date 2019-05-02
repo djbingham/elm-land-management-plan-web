@@ -1,3 +1,7 @@
+triggers:
+  branches:
+    - master
+
 pool:
   vmImage: 'ubuntu-latest'
 
