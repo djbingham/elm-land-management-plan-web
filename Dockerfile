@@ -25,9 +25,12 @@ WORKDIR /home/node
 
 EXPOSE 3000
 
-COPY --chown=node:node --from=development /home/node/package.json /home/node/package-lock.json /home/node/
-COPY --chown=node:node --from=development /home/node/server /home/node/server/
-COPY --chown=node:node --from=development /home/node/index.js /home/node/index.js
-RUN npm ci
+# Install dependencies, including build tools
+COPY package.json package-lock.json /home/node/
+RUN NODE_ENV=development npm ci
+
+# Add source code, build app and remove build tools
+COPY . /home/node/
+RUN npm run build && npm ci
 
 CMD ["node", "index.js"]
