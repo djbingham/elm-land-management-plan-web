@@ -7,6 +7,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  azureContainerRegistry: djbingham
+  azureSubscriptionEndpoint: djbinghamRegistry
+
 steps:
 - task: DockerCompose@0
   displayName: Build services
