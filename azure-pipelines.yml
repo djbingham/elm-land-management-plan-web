@@ -10,6 +10,7 @@ pool:
 variables:
   azureContainerRegistry: djbinghamRegistry
   azureSubscriptionEndpoint: djbinghamResourceManager
+  system.debug: true
 
 steps:
 - task: DockerCompose@0
