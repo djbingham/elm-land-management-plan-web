@@ -13,42 +13,72 @@ variables:
   system.debug: true
 
 steps:
+- task: Docker@2
+  displayName: Login to ACR
+  inputs:
+    command: login
+    containerRegistry: $(azureContainerRegistry)
+
 - task: Bash@3
+  displayName: Build development image
   inputs:
+    script: docker build --target development -t elm-lmp-web:$(Build.BuildId)-development
     targetType: inline
-    script: docker-compose build 
 
-- task: DockerCompose@0
-  displayName: Build services
+- task: Bash@3
+  displayName: Unit test
   inputs:
-    action: Build services
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker-compose.yml
-    additionalDockerComposeFiles: docker/compose.test.yml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    additionalImageTags: $(Build.BuildId)
+    script: docker run elm-lmp-web:$(Build.BuildId)-development
+    targetType: inline
 
-- task: DockerCompose@0
-  displayName: Run unit tests
-  inputs:
-    action: Run a specific service
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/compose.test.yml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    serviceName: unit-test
-    detached: false
+# - task: Docker@2
+#   displayName: Build and Push
+#   inputs:
+#     containerRegistry: $(azureContainerRegistry)
+#     command: buildAndPush
+#     repository: elm-lmp-web
 
-- task: DockerCompose@0
-  displayName: Push services
-  inputs:
-    action: Push services
-    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-    azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker-compose.yml
-    projectName: $(Build.Repository.Name)
-    qualifyImageNames: true
-    additionalImageTags: $(Build.BuildId)
+# - task: Bash@3
+#   displayName: Unit test
+#   env:
+#     NODE_ENV: production
+#     VERSION: $(Build.BuildId)
+#   inputs:
+#     script: |
+#       docker-compose -f docker-compose.yml -f docker/compose.test.yml up unit-test
+#     targetType: inline
+
+# - task: DockerCompose@0
+#   displayName: Build services
+#   inputs:
+#     action: Build services
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker-compose.yml
+#     additionalDockerComposeFiles: docker/compose.test.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     additionalImageTags: $(Build.BuildId)
+
+# - task: DockerCompose@0
+#   displayName: Run unit tests
+#   inputs:
+#     action: Run a specific service
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker/compose.test.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     serviceName: unit-test
+#     detached: false
+
+# - task: DockerCompose@0
+#   displayName: Push services
+#   inputs:
+#     action: Push services
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker-compose.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     additionalImageTags: $(Build.BuildId)
