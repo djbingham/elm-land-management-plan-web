@@ -13,12 +13,6 @@ variables:
   system.debug: true
 
 steps:
-# - task: Docker@2
-#   displayName: Login to ACR
-#   inputs:
-#     command: login
-#     containerRegistry: $(azureContainerRegistry)
-
 - task: Bash@3
   displayName: Build development image
   inputs:
@@ -31,22 +25,26 @@ steps:
     script: docker run elm-lmp-web:$(Build.BuildId)-development npm run test
     targetType: inline
 
+- task: Bash@3
+  displayName: Snyk test
+  inputs:
+    script: docker run elm-lmp-web:$(Build.BuildId)-development npm run snyk-test
+    targetType: inline
+
+- task: Bash@3
+  displayName: Pa11y test
+  inputs:
+    script: |
+      docker run -d -p "3000:3000" elm-lmp-web:$(Build.BuildId)
+      docker run --link app:app npm run elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
+    targetType: inline
+
 - task: Docker@2
   displayName: Build and Push
   inputs:
     containerRegistry: $(azureContainerRegistry)
     command: buildAndPush
     repository: elm-lmp-web
-
-# - task: Bash@3
-#   displayName: Unit test
-#   env:
-#     NODE_ENV: production
-#     VERSION: $(Build.BuildId)
-#   inputs:
-#     script: |
-#       docker-compose -f docker-compose.yml -f docker/compose.test.yml up unit-test
-#     targetType: inline
 
 # - task: DockerCompose@0
 #   displayName: Build services
