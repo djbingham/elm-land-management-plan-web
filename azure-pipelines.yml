@@ -22,7 +22,7 @@ steps:
 - task: Bash@3
   displayName: Build development image
   inputs:
-    script: docker build --target development -t elm-lmp-web:$(Build.BuildId)-development
+    script: docker build --target development -t elm-lmp-web:$(Build.BuildId)-development .
     targetType: inline
 
 - task: Bash@3
