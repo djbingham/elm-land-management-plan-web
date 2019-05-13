@@ -6,15 +6,14 @@
   "scripts": {
     "build:css": "bin/build-css",
     "build": "bin/build",
-    "lint": "standard",
-    "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
     "test": "npm run lint && npm run unit-test",
     "start": "node index.js",
     "start-quiet": "node index.js >/dev/null",
-    "pa11y-test": "pa11y-ci",
+    "lint": "standard",
+    "pa11y-test": "start-server-and-test start-quiet 3000 pa11y-ci",
     "snyk-test": "snyk test",
-    "ci-test": "start-server-and-test start-quiet 3000 pa11y-test",
-    "all-tests": "npm run test && npm run snyk-test && npm run ci-test"
+    "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
+    "all-tests": "npm run lint && npm run unit-test && npm run pa11y-test && npm run snyk-test"
   },
   "author": "Defra DDTS",
   "contributors": [
