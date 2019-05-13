@@ -28,7 +28,7 @@ steps:
 - task: Bash@3
   displayName: Unit test
   inputs:
-    script: docker run elm-lmp-web:$(Build.BuildId)-development
+    script: docker run elm-lmp-web:$(Build.BuildId)-development npm run test
     targetType: inline
 
 # - task: Docker@2
