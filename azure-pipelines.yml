@@ -13,11 +13,10 @@ variables:
   system.debug: true
 
 steps:
-- task: DockerInstaller@0
-  displayName: Docker Installer
+- task: Bash@3
   inputs:
-    dockerVersion: 17.09.0-ce
-    releaseType: stable
+    targetType: inline
+    script: docker-compose build 
 
 - task: DockerCompose@0
   displayName: Build services
