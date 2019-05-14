@@ -1,0 +1,81 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureContainerRegistry: djbinghamRegistry
+  azureSubscriptionEndpoint: djbinghamResourceManager
+  system.debug: true
+
+steps:
+- task: Bash@3
+  displayName: Build container images
+  inputs:
+    script: |
+      docker build -t elm-lmp-web:$(Build.BuildId) .
+      docker build --target development -t elm-lmp-web:$(Build.BuildId)-development .
+      docker build --target pa11y -t elm-lmp-web:$(Build.BuildId)-pa11y .
+    targetType: inline
+
+- task: Bash@3
+  displayName: Unit test
+  inputs:
+    script: docker run --rm elm-lmp-web:$(Build.BuildId)-development npm run test
+    targetType: inline
+
+- task: Bash@3
+  displayName: Pa11y test
+  inputs:
+    script: |
+      docker run -d --name web elm-lmp-web:$(Build.BuildId)
+      docker run --rm --link web:web elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
+      docker stop web
+      docker rm web
+    targetType: inline
+
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    containerRegistry: $(azureContainerRegistry)
+    command: buildAndPush
+    repository: elm-lmp-web
+
+# - task: DockerCompose@0
+#   displayName: Build services
+#   inputs:
+#     action: Build services
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker-compose.yml
+#     additionalDockerComposeFiles: docker/compose.test.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     additionalImageTags: $(Build.BuildId)
+
+# - task: DockerCompose@0
+#   displayName: Run unit tests
+#   inputs:
+#     action: Run a specific service
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker/compose.test.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     serviceName: unit-test
+#     detached: false
+
+# - task: DockerCompose@0
+#   displayName: Push services
+#   inputs:
+#     action: Push services
+#     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+#     azureContainerRegistry: $(azureContainerRegistry)
+#     dockerComposeFile: docker-compose.yml
+#     projectName: $(Build.Repository.Name)
+#     qualifyImageNames: true
+#     additionalImageTags: $(Build.BuildId)
