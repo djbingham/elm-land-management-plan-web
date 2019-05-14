@@ -1,4 +1,3 @@
-ARG NODE_ENV=production
 ARG NODE_VERSION=10.15.3
 
 # Development
@@ -41,6 +40,7 @@ CMD ["npm", "run", "pa11y-test"]
 # Production
 FROM node:${NODE_VERSION}-alpine AS production
 
+ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
 USER node
