@@ -14,9 +14,11 @@ variables:
 
 steps:
 - task: Bash@3
-  displayName: Build development image
+  displayName: Build container images
   inputs:
     script: docker build --target development -t elm-lmp-web:$(Build.BuildId)-development .
+    script: docker build --target pa11y -t elm-lmp-web:$(Build.BuildId)-pa11y .
+    script: docker build -t elm-lmp-web:$(Build.BuildId) .
     targetType: inline
 
 - task: Bash@3
