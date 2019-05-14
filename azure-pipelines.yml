@@ -25,15 +25,14 @@ steps:
 - task: Bash@3
   displayName: Unit test
   inputs:
-    script: docker run elm-lmp-web:$(Build.BuildId)-development npm run test
+    script: docker run --rm elm-lmp-web:$(Build.BuildId)-development npm run test
     targetType: inline
 
 - task: Bash@3
   displayName: Pa11y test
   inputs:
     script: |
-      docker run -d --name app -p "3000:3000" elm-lmp-web:$(Build.BuildId)
-      docker run --link app:app elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
+      docker run --rm elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
     targetType: inline
 
 - task: Docker@2
