@@ -11,7 +11,7 @@
     "start": "node index.js",
     "start-quiet": "node index.js >/dev/null",
     "lint": "standard",
-    "pa11y-test": "start-server-and-test start-quiet 3000 pa11y-ci",
+    "pa11y-test": "pa11y-ci",
     "snyk-test": "snyk test",
     "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
     "all-tests": "npm run lint && npm run unit-test && npm run pa11y-test && npm run snyk-test"
@@ -43,7 +43,6 @@
     "node-sass": "^4.11.0",
     "pa11y-ci": "^2.2.0",
     "snyk": "^1.154.0",
-    "standard": "12.0.1",
-    "start-server-and-test": "^1.9.0"
+    "standard": "12.0.1"
   }
 }
