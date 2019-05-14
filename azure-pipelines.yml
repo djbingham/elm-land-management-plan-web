@@ -17,9 +17,9 @@ steps:
   displayName: Build container images
   inputs:
     script: |
+      docker build -t elm-lmp-web:$(Build.BuildId) .
       docker build --target development -t elm-lmp-web:$(Build.BuildId)-development .
       docker build --target pa11y -t elm-lmp-web:$(Build.BuildId)-pa11y .
-      docker build -t elm-lmp-web:$(Build.BuildId) .
     targetType: inline
 
 - task: Bash@3
