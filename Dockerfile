@@ -32,7 +32,7 @@ RUN apk update && apk upgrade && \
 
 USER node
 
-COPY --from=development /home/node/ /home/node/
+COPY --chown=node:node --from=development /home/node/ /home/node/
 COPY --chown=node:node .pa11yci /home/node/
 
 CMD ["npm", "run", "pa11y-test"]
