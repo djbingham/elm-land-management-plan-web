@@ -11,7 +11,7 @@
   },
   "urls": [
     {
-      "url": "http://localhost:3000/",
+      "url": "http://web:3000/",
       "ignore": [
         "WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4"
       ]

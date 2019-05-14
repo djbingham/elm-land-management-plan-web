@@ -32,7 +32,10 @@ steps:
   displayName: Pa11y test
   inputs:
     script: |
-      docker run --rm elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
+      docker run -d --name web elm-lmp-web:$(Build.BuildId)
+      docker run --rm --link web:web elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
+      docker stop web
+      docker rm web
     targetType: inline
 
 - task: Docker@2
