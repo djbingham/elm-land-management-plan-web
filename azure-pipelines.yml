@@ -26,12 +26,6 @@ steps:
     targetType: inline
 
 - task: Bash@3
-  displayName: Snyk test
-  inputs:
-    script: docker run elm-lmp-web:$(Build.BuildId)-development npm run snyk-test
-    targetType: inline
-
-- task: Bash@3
   displayName: Pa11y test
   inputs:
     script: |
